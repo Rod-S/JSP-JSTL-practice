@@ -3,10 +3,11 @@ public class Album {
     private String artist;
     private String name;
     private int release_date;
-    private double sales;
     private String genre;
+    private double sales;
 
-    public Album() {}
+    public Album(int id, String the_beatles, char c, int release_date, String rock, double sales) {}
+
 
     public long getId() {
         return id;
@@ -56,3 +57,12 @@ public class Album {
         this.genre = genre;
     }
 }
+
+    public Album(long id, String artist, String name, int release_date, String genre, double sales) {
+        this.id = id;
+        this.artist = artist;
+        this.name = name;
+        this.release_date = release_date;
+        this.genre = genre;
+        this.sales = sales;
+    }
