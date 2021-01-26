@@ -3,25 +3,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet(name="LoginServlet", urlPatterns = "/login")
+@WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.getRequestDispatcher("/login.jsp").forward(req, res);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if (req.getMethod().equalsIgnoreCase("post")) {
-            String username = req.getParameter("username");
-            String password = req.getParameter("password");
-            if (username.equals("admin") && password.equals("password")) {
-                res.sendRedirect("/profile");
-            } else {
-                res.sendRedirect("/login?error=try-again");
-            }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        boolean validAttempt = (username.equals("admin") || username.equals("user")) && password.equals("password");
+        HttpSession session = request.getSession(); //gets current session
+
+        if (validAttempt && username.equals("admin")) {
+            //Admin path - the person who logged in is an admin
+            session.setAttribute("isAdmin", true);
+            response.sendRedirect("/admin"); // servlet <-- url pattern
+        } else if (validAttempt && username.equals("user")) {
+            session.setAttribute("isAdmin", false);
+            response.sendRedirect("/profile");
+        } else {
+            response.sendRedirect("/login");
         }
     }
 }
