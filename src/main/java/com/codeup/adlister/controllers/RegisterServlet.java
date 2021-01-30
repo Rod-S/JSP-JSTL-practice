@@ -25,17 +25,19 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        System.out.println(email);
+        System.out.println(username);
+        System.out.println(password);
         User registerUser = new User(username, email, password);
         User user = DaoFactory.getUsersDao().findByUsername(username);
-
-        if (user.getUsername().equalsIgnoreCase(username)) {
-            response.sendRedirect("/register");
-        } else {
-            request.getSession().setAttribute("user", user);
-            DaoFactory.getUsersDao().insert(registerUser);
+//
+//        if (user.getUsername().equalsIgnoreCase(username)) {
+//            response.sendRedirect("/register");
+//        } else {
+        request.getSession().setAttribute("user", registerUser);
+        DaoFactory.getUsersDao().insert(registerUser);
             response.sendRedirect("/profile");
-        }
+//        }
 
     }
 }

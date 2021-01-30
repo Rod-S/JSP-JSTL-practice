@@ -68,6 +68,8 @@ public class MySQLUsersDao implements Users {
         while (rs.next()) {
             users.add(extractUser(rs));
         }
+        if (users.size() > 0) {
         return users.get(0);
+        } else return null;
     }
 }
